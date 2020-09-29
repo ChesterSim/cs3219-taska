@@ -30,6 +30,3 @@ Every Dockerfile needs to start with a `FROM` command, which specifies the base 
 
 This command copies the local directory `html` to directory `/usr/share/nginx/html` residing in the docker container.
 
-```CMD echo "The Docker container is running now!"```
-
-This tells Docker to run the command `echo "The Docker container is running now!"` during the building of a container from the image. 
