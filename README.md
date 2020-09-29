@@ -2,31 +2,61 @@
 
 1. Docker installed
 
-### Building the Docker image
+### Introduction
 
-This repository contains a Dockerfile which we can use to build our Docker image. Run the following command:
+In this repo, we try to create a reverse proxy that serves two other live web server containers. In the `microservice1` and `microservice2`
+directories, there are `Dockerfile` that you can use to run the simulated web servers. In the root folder, there is a `Dockerfile` that you will use to run the reverse-proxy container.
 
-```docker build --tag mynginx .```
+### Building the Docker images
 
-This builds a Docker image named `mynginx`.
+First, build the two web servers' images using the following command in the terminal:
 
+`cd microservice1 && docker build -t microservice1 . && cd ../microservice2 && docker build -t microservice2 . && cd .. && docker build -t chester-reverse-proxy .`
 
-### Running a Docker container
+Verify that all three images are built correctly:
 
-To start running an instance of the Docker image, type the following command in the terminal:
+`docker image ls`
 
-```docker run --name chester-nginx -d -p 8080:80 mynginx```
+From the results output from the above command, you should see two repository named `microservice1`, `microservice2` and `chester-reverse-proxy`.
 
-This run a Docker container based off the `mynginx` image. The name of the container is `chester-nginx`, and runs in `detached` mode. To see the webpage being served by this container, head over to your browser and enter the following into the URL: `localhost:8080`.
+Next, you run the microservice images as containers:
 
+`docker run --name microservice1 -d -p 3001:80 microservice1 && docker run --name microservice2 -d -p 3002:80 microservice2`
+
+After which, we run the reverse proxy:
+
+`docker run -d --name chester-reverse-proxy -p 80:80 -p 443:443 --link=microservice1 --link=microservice2 chester-reverse-proxy`
+
+Verify that all three containers are running:
+
+`docker ps`
+
+From the results output from the above command, you should see
+
+### Check the results
+
+For the next few steps, you may use either your browser or the command line tool `curl`.
+
+First, check the existence of both web servers that we simulate as microservices.
+
+`localhost:3001`
+
+`localhost:3002`
+
+Next, head over to `localhost`, where the reverse-proxy resides. Over here, we can try
+
+`localhost/app1`
+
+`localhost/app2`
+
+to verify that the reverse proxy works. (We are simulating the example that we can redirect to two different server.)
 
 ### Understanding the Dockerfile
 
-```FROM nginx```
+`FROM nginx`
 
 Every Dockerfile needs to start with a `FROM` command, which specifies the base image for the subsequent instruction.
 
-```COPY html /usr/share/nginx/html```
+`COPY html /usr/share/nginx/html`
 
 This command copies the local directory `html` to directory `/usr/share/nginx/html` residing in the docker container.
-
