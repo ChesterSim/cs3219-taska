@@ -51,6 +51,17 @@ Next, head over to `localhost`, where the reverse-proxy resides. Over here, we c
 
 to verify that the reverse proxy works. (We are simulating the example that we can redirect to two different server.)
 
+
+### Docker Hub
+
+This image has been pushed to Docker Hub, found in this [link](https://hub.docker.com/repository/docker/chestersim/nginx-reverse-proxy).
+
+To run this image from Docker Hub, you must first pull it:
+
+`docker pull chestersim/nginx-reverse-proxy:cs3219`
+
+After which, you can follow the steps above, but replace `nginx-reverse-proxy` with `chestersim/nginx-reverse-proxy:cs3219`. 
+
 ### Understanding the Dockerfile
 
 `FROM nginx`
