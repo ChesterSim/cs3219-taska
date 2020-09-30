@@ -11,13 +11,13 @@ directories, there are `Dockerfile` that you can use to run the simulated web se
 
 First, build the two web servers' images using the following command in the terminal:
 
-`cd microservice1 && docker build -t microservice1 . && cd ../microservice2 && docker build -t microservice2 . && cd .. && docker build -t chester-reverse-proxy .`
+`cd microservice1 && docker build -t microservice1 . && cd ../microservice2 && docker build -t microservice2 . && cd .. && docker build -t nginx-reverse-proxy .`
 
 Verify that all three images are built correctly:
 
 `docker image ls`
 
-From the results output from the above command, you should see two repository named `microservice1`, `microservice2` and `chester-reverse-proxy`.
+From the results output from the above command, you should see two repository named `microservice1`, `microservice2` and `nginx-reverse-proxy`.
 
 Next, you run the microservice images as containers:
 
@@ -25,7 +25,7 @@ Next, you run the microservice images as containers:
 
 After which, we run the reverse proxy:
 
-`docker run -d --name chester-reverse-proxy -p 80:80 -p 443:443 --link=microservice1 --link=microservice2 chester-reverse-proxy`
+`docker run -d --name nginx-reverse-proxy -p 80:80 -p 443:443 --link=microservice1 --link=microservice2 nginx-reverse-proxy`
 
 Verify that all three containers are running:
 
